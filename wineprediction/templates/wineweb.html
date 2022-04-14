@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine prediction</title>
+</head>
+<style>
+    body {cursor:default;} 
+</style>
+<body>
+    
+    <div>
+        {%if error is defined%}
+        <h2>Error! Previous Wrong Input! Try again..!</h2>
+        {% endif %}
+        {% if data is not defined %}
+        <div id= "Input">
+            <form action="/wine" method="post">
+                <div>
+                <input type="radio" id="radiobtn" name="wine" value="red" onclick="redcheck()">RedWine</input>
+                <input type="radio" id="radiobtn" name="wine" value="white" onclick="whitecheck()">WhiteWine</input>
+                <br>
+               
+                </div>
+                <div id="red" style="display:none">
+                    <input id='alcohol' type="text" name="alcohol"  onchange="redinputcheck()"> Alcohol(8~15)</input>
+                    <br>
+                    <input id='acidity' type="text" name="volatile acidity" onchange="redinputcheck()"> volatile acidity(0~1.6)</input>
+                    <br>
+                    <input id= "redvalc" type="text" name="citric acid" onchange="redinputcheck()" > citric acid(0~1)</input>
+                    <br>
+                    <input id= "redvals" type="text" name="sulphates"onchange="redinputcheck()" > Sulphates(0~2)</input>
+                    <br>
+                </div>
+                <div id="white" style="display:none">
+                    <input id='alcohol' type="text" name="alcohol" onchange="whiteinputcheck()"> Alcohol(8~15)</input>
+                    <br>
+                    <input id='acidity' type="text" name="volatile acidity" onchange="whiteinputcheck()"> volatile acidity(0~1.6)</input>
+                    <br>
+                    <input id="whitevald" type="text" name="density" onchange="whiteinputcheck()" > density(0.0~1.1)</input>
+                    <br>
+                    <input id="whitevalc" type="text" name="chlorides" onchange="whiteinputcheck()"> chlorides(0.0~0.35)</input>
+                    <br>
+                    <input id="whitevalr" type="text" name="residual sugar" onchange="whiteinputcheck()" > residual sugar(0.6~66)</input>
+                    <br>
+                </div>
+                <div id="dynamic" style="display:none">
+                    <input id="submit" type='submit' disabled></input>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        
+        <div id="display">
+            {% if data is defined %}
+                <h4>The expected value is {{data}}</h4>
+                <button type="button" onclick="location.href='/'">Go back</button>
+	        {% endif %}
+        </div>
+        
+    </div>
+    <script>
+        
+        function redcheck(){
+            document.getElementById("dynamic").style.display = "block";
+            document.getElementById("red").style.display ="block";
+            document.getElementById("white").style.display ="none";
+        }
+        function whitecheck(){
+            document.getElementById("dynamic").style.display = "block";
+            document.getElementById("red").style.display ="none";
+            document.getElementById("white").style.display ="block";
+        }   
+        function redinputcheck(){
+            const alcohol = document.getElementById('alcohol').value 
+            const acidity = document.getElementById('acidity').value
+            const acid = document.getElementById('redvalc').value
+            const sulphates = document.getElementById('redvals').value
+            
+            if(alcohol!= '' && acidity!='' && acid != '' && sulphates!= ''){
+                
+                if (is_number(alcohol) == false || is_number(acid) == false  || is_number(sulphates) == false || is_number(acidity) == false){
+                    error1();
+                }
+                else if (alcohol[0] == '.' || acid[0] == '.' || sulphates[0] =='.'){
+                    error2();
+                }
+                else if ((isNaN(alcohol)) || (isNaN(acid)) || (isNaN(sulphates)) || (isNaN(acidity))){
+                    
+                    error3();
+                }
+                else if( parseFloat(alcohol) <0 || parseFloat(acid)<0 || parseFloat(sulphates)< 0 || parseFloat(acidity)< 0){
+                    error4();
+                }
+                else{
+                    document.getElementById("submit").disabled = false;
+                }
+            }
+            else{
+                document.getElementById("submit").disabled = true;
+            }
+        }
+        function whiteinputcheck(){
+            const alcohol = document.getElementById('alcohol').value 
+            const acidity = document.getElementById('acidity').value
+            const density = document.getElementById('whitevald').value
+            const chlorides = document.getElementById('whitevalc').value
+            const sugar = document.getElementById('whitevalr').value
+    
+            if(alcohol!= '' && acidity!= '' && density!= '' && chlorides!= '' && sugar!=''){
+                if (is_number(alcohol) == false || is_number(acidity) == false || is_number(density) == false || is_number(chlorides) == false || is_number(sugar) == false){
+                    error1();
+                }
+                else if (alcohol[0] == '.' || acidity[0] == '.' || density[0] =='.' || chlorides[0] =='.' || sugar[0] =='.'){
+                    erro2();
+                }
+                else if ((isNaN(alcohol)) || (isNaN(acidity)) || (isNaN(density)) || (isNaN(sugar)) || (isNaN(chlorides))){
+                    error3();
+                }
+                else if( parseFloat(alcohol) <=0 || parseFloat(acidity)<=0 || parseFloat(density)<= 0 || parseFloat(sugar)<= 0 || parseFloat(chlorides)<= 0){
+                    error4();
+                }
+                else{
+                    document.getElementById("submit").disabled = false;
+                }
+            }
+            else{
+                document.getElementById("submit").disabled = true;
+            }
+        }
+        function is_number(s){
+            try{
+                parseFloat(s)
+                return true
+            }
+            catch (error){
+                return false
+            }    
+        }
+        function error1(){
+            alert("소수가 아닌 잘못된 입력.")
+            document.getElementById("submit").disabled = true;
+        }
+        function error2(){
+            alert("잘못된 입력! 소수점만 입력됐다.")
+            document.getElementById("submit").disabled = true;
+        }
+        function error3(){
+            alert("문자열은 입력하면 안됩니다.") 
+            document.getElementById("submit").disabled = true;
+        }
+        function error4(){
+            alert("음수 입력")
+            document.getElementById("submit").disabled = true;
+        }
+    </script>
+</body>
+
+</html>

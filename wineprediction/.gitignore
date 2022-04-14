@@ -1,0 +1,6 @@
+*.out 
+*.names
+whitewinemodel/
+redwinemodel/
+models/
+data/
