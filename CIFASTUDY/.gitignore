@@ -1,0 +1,5 @@
+data/
+cifar-10-batches/
+static/
+*.out
+*.pth
