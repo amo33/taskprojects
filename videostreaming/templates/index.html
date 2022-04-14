@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+    
+</head>
+<body>
+    <h1>Video Streaming</h1>
+    <div> 
+    <img id="show" src=""/>
+    </div> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js" integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>// 위에 socket.io는 cdn에서 제공해주는 js를 갖고 왔다.
+        // js로 socket 통신 받는다. 
+        let loc = document.getElementById('show');
+        let socket = io.connect('http://localhost:5000');
+        socket.on("sending", (data)=>{
+            
+            let byteArray = new Uint8Array(data);
+            let img = document.getElementById('show');
+            
+            img.src = window.URL.createObjectURL(new Blob([byteArray], { type: "application/octet-stream" }));
+        })
+    
+    </script>
+</body>
+</html>
