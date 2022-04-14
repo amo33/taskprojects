@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Page</title>
+    <link rel="stylesheet" type= "text/css" href="{{url_for('static',filename= 'style.css')}}">
+</head>
+
+<body>
+    <ul>
+        <form action="http://127.0.0.1:5000/list" method="GET"> <!-- 여기에 get 왼쪽에 ' 있었는데 왜 됐지? -->
+            <input type="text" name="tag" value="" />
+            <input type="submit">
+        </form>
+        <h3><strong>we can select from two of these.</strong></h3>
+
+        <h4>DB</h4>
+        <h4>Text</h4>
+
+        <button type="button" onclick="location.href='/'">Go back to registration</button>
+    </ul>
+    <div id="text" >
+        <h3>View all users</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Age</th>
+                    <th>Image</th>
+                </tr>
+                    {% for name in Name %}
+                        {% set item_0 = id[loop.index-1] %}
+                        {% set item_1 = Name[loop.index-1] %}
+                        {% set item_2 = Age[loop.index-1] %}
+                        {% set item_3 = Image[loop.index-1] %}
+                        <tr>
+                            <td><p>{{item_0}}</p></td>
+                            <td><p onclick="location.href = '/hello?value={{item_0}}' + '{{types}}' ">{{item_1}}</p></td>
+                            <td><p>{{item_2}}</p></td>
+                            <td><p>{{item_3}}</p></td>
+                        </tr>  
+                    {% endfor %} 
+            </tbody>
+        </table>
+    </div>
+    <div id="db">
+        <h3>View all users</h3>
+        <table>
+            <tbody>
+            <tr>
+                <th>id</th>
+                <th>Username</th>
+                <th>Age</th>
+                <th>Image</th>
+            </tr>
+            {% for item in values %} 
+            <tr>
+                <td><p>{{item.idx}}</p></td>
+                <td><p onclick="location.href = '/hello?value=' + '{{item.idx}}' + '{{types}}'">{{item.username}}</p></td>
+                <td><p>{{item.age}}</p></td>
+                <td><p>{{item.Image}}</p></td>
+            </tr>  
+            {% endfor %} 
+            </tbody>
+        </table>
+        
+    </div>
+    <div id="default">
+        <h3>User list.</h3>
+        <div class=" box ">
+            <ul>
+                {% for name in values %}
+                    <p onclick="location.href = '/hello?value=' + '{{name}}'">{{name}}</p>
+                {% endfor %}
+            </ul>
+        </div>
+            
+    </div>
+    <script>
+        let flag ='{{ types }}' 
+        if( flag === 'default'){
+            document.getElementById('db').style = "display:none"
+            document.getElementById('text').style = "display:none"
+            document.getElementById('default').style = "display:none"
+        }
+        else if(flag === 'db'){
+            document.getElementById('db').style = "display:block"
+            document.getElementById('text').style = "display:none"
+            document.getElementById('default').style = "display:none"
+
+        }
+        else if(flag === 'text'){ // 왜 위에 있는 것들도 다 같이 없어지는건지 확인하기 
+            document.getElementById('db').style = "display:none"
+            document.getElementById('text').style = "display:block"
+            document.getElementById('default').style = "display:none"
+        }
+        
+    </script>
+</body>
+</html>

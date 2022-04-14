@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>	
+  <link rel="stylesheet" type= "text/css" href="{{url_for('static',filename= 'style.css')}}">
+</head>
+<script>
+	
+</script>
+ <body>
+	{# data라는게 들어오지 않으면 텅빈 것으로 표현 #}
+	{% if data is not defined %}
+    {% set data = {} %}
+	{% endif %}
+	 <div id = 'default'>
+		<h3>Register page</h3>
+		<form action="/hello" method="post" enctype="multipart/form-data">
+		First name:<br>
+		<input type="text" name="firstname" value="">
+		<br>
+		Last name:<br>
+		<input type="text" name="lastname" value="">
+		<br>
+		Age:<br>
+		<input type="text" name="age" value="">
+		<br>
+		Image:<br>
+		<input type="file" accept="image/*" name = "file" value = "">
+		<br>
+		<br>
+		<input type="submit" value="Submit">
+		<br><br>
+		</form> 
+		<button type="button" onclick="location.href='/list'">show list</button>
+		<br><br>
+	</div>
+
+	<div id ="detail">
+		<h3>Detail info</h3>
+		<table>
+			<tbody>
+				<tr>
+					<th>ID</th>
+					<th>User</th>
+					<th>Age</th>
+					<th>Image</th>	
+				</tr>
+					<tr>
+						<td><p>{{data['idx']}}</p></td>
+						<td><p>{{data['username']}}</p></td>
+						<td><p>{{data['age']}}</p></td>
+						<!--<td><img src= "{{url_for('static', filename =  data['Image'])}}" alt="user Image" /></td> -->
+						<td><img id="image" alt="user image"></td>
+					</tr>
+			</tbody>
+		</table>
+		<button type="button" onclick="location.href='/'">Go back to registration</button>
+	</div>
+	
+	<script>
+
+		let flag = '{{types}}'
+		console.log(flag)
+		
+		if(flag === 'detail'){
+			document.getElementById('default').style = "display:none"
+			document.getElementById('detail').style = "display:block"
+			//let datum = {{data | safe}};
+			//datum = datum.replace(/"/g,"")
+			let datum = "{{data['idx']}}"; // 계속 오류 났던 이유 : 처음에 접속하면 data를 주어지지 않는다. 이 경우 빈 값을 넣어준다. - 
+			console.log(datum);
+			//let val = Object.assign({}, ...datum.map((x) => ({['USER']: x.USER})));
+			//value = val["USER"]
+			$.ajax({
+				url : '/responsed?value='+datum, 
+				type : 'GET',
+				data : {},
+				success : (file)=>{
+					// let obj =? -> must extract image d
+					
+					let exact = file["Image"];
+					if(exact === 'static/ThumbedImg/'){
+						exact = ''
+					}
+					document.getElementById('image').src = exact; // use thumbnailed value 
+					console.log('Success')
+				},
+				error : ()=>{
+					alert('Error!');
+				}
+			});
+			
+		}
+		else{
+			document.getElementById('default').style = "display:block"
+			document.getElementById('detail').style = "display:none"
+		}
+	</script>
+
+	
+ </body>
+</html>
