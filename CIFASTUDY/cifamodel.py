@@ -115,7 +115,7 @@ net = CifarNet()
 
 hypothesis = nn.CrossEntropyLoss()
 
-optimizer = optim.SGD(net.parameters(), lr=0.1) #momentum=0.9 삭제
+optimizer = optim.SGD(net.parameters(), lr=0.07) #momentum=0.9 삭제
 #scheduler = optim.lr_scheduler.LambdaLR(optimizer=optimizer,
 #                                        lr_lambda=lambda epoch: 0.95 ** epoch,
 #                                        last_epoch=-1,
@@ -196,7 +196,7 @@ correct = 0
 total = 0
 # 학습 중이 아니므로, 출력에 대한 변화도를 계산할 필요가 없습니다
 with torch.no_grad():
-    for data in test_loader:
+    for data in valid_loader:
         images, labels = data
         # 신경망에 이미지를 통과시켜 출력을 계산합니다
         outputs = net(images)
