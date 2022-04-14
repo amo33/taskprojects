@@ -76,14 +76,18 @@ def submitImage():
     '''
     testimg = testimg.reshape((1, 3, 32, 32))
     testimg = testimg.permute(0,2,3,1).type(torch.float32)
+    '''
     #testimg_tensor = torch.tensor(testimg)
     #print(testimg_tensor)
-    testimg = (testimg- 0.5)/0.5 
+    
     #testimg = (testimg.astype('float32') -testimg.mean()) / testimg.std()
     #testimg = (testimg.astype('float32'))
-    testimg_tensor = torch.tensor(testimg)
+    
     #testimg = testimg.type(torch.float32)
     #testimg_tensor = (testimg/255 -0.5 ) /0.5 여기서 255로 나눠주지 않아도 된다. 이유: 1이 최대값으로 구성되어 있기 때문이다. 정규화만 해주면 되기 때문에 mean=0.5, std:0.5로 구성해준다.
+    '''
+    testimg = (testimg- 0.5)/0.5 
+    testimg_tensor = torch.tensor(testimg)
     testimg_loader= DataLoader(testimg_tensor, batch_size=1, num_workers= 0, shuffle = False)
     classes = ('plane', 'car', 'bird', 'cat',
         'deer', 'dog', 'frog', 'horse', 'ship', 'truck')

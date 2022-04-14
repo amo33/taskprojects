@@ -56,7 +56,7 @@ def load_cifar_10_data(data_dir, negatives=False): #흩어져있는 batches들 �
     cifar_train_labels = cifar_train_labels[territory:]
     with open('testdata.pickle','wb') as f:
         pickle.dump(cifar_test_data,f)
-    with open('testlabel','wb') as fw:
+    with open('testlabel.pickle','wb') as fw:
         pickle.dump(cifar_test_labels, fw)
     #cifar_test_data_dict = unpickle(data_dir + "/test_batch")
     #cifar_test_data = cifar_test_data_dict[b'data']
