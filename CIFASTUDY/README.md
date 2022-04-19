@@ -77,3 +77,72 @@ numpy.roll을 이용해 axis를 roll 하는 방법
                                                 # result -> [1,4,2,3]
                                                 # 맨 왼쪽부터 0,1,2,3.. 인덱스이다.
 ```
+### NN 주의점 
+Neural net이 working하지 않는 37가지 이유
+원문: https://blog.slavv.com/37-reasons-why-your-neural-network-is-not-working-4020854bd607
+
+점검 리스트등으로 활용 가능해 보여서 일부(이긴 한데 거의 전부)를 발췌하여 옮겨둔다.
+
+
+만일 학습이 잘 안된다면,
+
+먼저 해볼 것
+동작한다고 알려진 모델을 가져다가 해본다. 평이한 loss를 쓰면 더 좋다
+regularization, data augmentation 등 모두 off
+finetuning하고 있다면, preprocessing을 다시한번 체크하라. 원래 모델에게 주어진 preprocessing 그대로 해야 한다.
+input data가 correct한지 확인
+적은 데이터셋(2~20샘플)으로 시작하라. 그 데이터셋에 overfit시킨 다음 조금씩 데이터를 더해보라.
+위에서 빼놓은 것들을 더해간다. regularization, data augmentation, custom loss, complex models, etc.
+그래도 안되면 다음을 점검하라
+
+I. Dataset issues
+dimension을 뒤바꾸거나, 모두 0으로만 이루어진 벡터를 넣고 있거나, 같은 배치만 반복해서 넣거나 하는 어이없는 실수들이 많으니 하나하나 찍어보면서 점검할것.
+랜덤 데이터를 넣어보고 에러의 변화를 살펴보라. 만일 비슷하다면 net의 중간 어디선가 데이터가 (모두 0이 된다든지 하는 식으로) garbage로 변하고 있다.
+입력 몇개만 가지고 생성되는 label과, 그 입력을 shuffle해보고 생성되는 label이 같은지 점검해볼것
+올바른 문제를 풀고 있는건가 다시 점검(주식데이터 같은건 원래 랜덤이다. 패턴이 있을리 없다)
+데이터 자체가 너무 더러울 수 있다. noise가 너무 많다거나, mis-label이 너무 많다거나 하는 문제들. 일일이 눈으로 확인해보는 수밖에 없다.
+shuffle 꼭 할것. ordered data가 들어가면 학습이 잘 안된다.
+class imbalance 문제 점검. 참고할 글
+트레이닝셋은 충분한가. finetuning말고 scratch부터 하려면 많은 데이터가 필요하다.
+batch안에 최대한 많은 label이 들어가도록.
+batch size를 줄여라. batch size가 너무 크면 generalization능력을 떨어트리는 것으로 알려져 있다. 참고논문 arXiv:1609.04836
+II. Data Normalization/Augmentation
+정규화 할것
+정규화 하고 training/validation/test set을 나누는 것이 아니고, 먼저 나눈 후 training set에 대해 평균, 분산을 구해 정규화하는 것이다.
+data augmentation 너무 많이 하면 underfit한다.
+pretrained model쓸 때는 입력에 항상 주의할것. 예) 구간이 [0, 1], [-1, 1], [0, 255]중 어느것인가
+III. Implementation issues
+좀 더 간단한 문제부터 풀어보라. 예를들어, 객체의 종류와 위치를 맞추는 것이라면, 일단 종류만 맞춰보라
+우연히 맞을 확률 점검. 예를들어, 10개의 클래스를 맞추는 문제에서 우연히 맞을 negative log loss는 −ln(0.1)=2.302다.
+loss function을 만들어 쓰고 있다면, 해당 loss가 잘 동작하는지 일일이 확인할 필요가 있다.
+라이브러리가 제공한는 loss를 쓴다면, 해당 함수가 어떤 형식의 input을 받는지 명확히 확인할것. 예를들어, PyTorch에서, NLLLoss와 CrossEntropyLoss는 다른 형식의 입력을 받는다.
+loss가 작은 term들의 합이라면, 각 term의 scale을 조정해야 할 수도 있다.
+loss말고 accuracy를 써야 할 경우도 있다. metric을 loss로 잡는 것이 적절한지 다시 생각해볼 것.
+net을 스스로 만들었다면
+하나하나 제대로 동작하는지 확실히 하고 넘어가라
+학습중 frozen layer가 있는지 점검해볼것.
+expressive power가 부족할 수 있다. network size를 늘려볼 것.
+input이 (k,H,W)=(64,64,64) 이런식이면 중간에 잘 되는지 안되는지 보기가 애매하다. prime number로 구성하든지 해서 잘 동작하는지 확인해보라.
+Gradient descent를 직접 만들었으면, 잘 동작하는지 확인하라. 다음을 참고하라 1 23
+IV. Training issues
+한개나 두개의 예를 넣어서 학습해보고 잘 되는지 확인하라
+net초기화가 중요할 수 있다. Xavier나 He를 시도해보라
+hyperparameter를 이리저리 바꿔본다
+regularization(예: dropout, batch norm, weight/bias L2 reg.등)을 줄여본다. 이 강의에서는 (overfitting보다) underfitting을 먼저 제거하라고 한다.
+loss가 줄고 있다면 더 기다려보라
+Framework들은 mode(training/test)에 따라 Batch Norm, Dropout등이 다르게 동작한다.
+학습과정을 시각화 하라.
+각 layer의 activations, weights, updates를 monitor할 것. 변화량이 적어야 (약 1-e3정도는 돼야) 학습이 다 된 것이다.
+Tensorboard나 Crayon을 써라
+activation의 평균값이 0을 상회하는지 주시할것. Batch Norm이나 ELU를 써라.
+weights, biases의 histogram은 gaussian인 것이 자연스럽다(LSTM은 그렇지 않다). 해당 값들이 inf로 발산하는지 주시해야 한다.
+optimizer를 잘 쓰면 학습을 빠르게 할 수 있다. 각종 gradient에 관한 훌륭한 참고 글
+Exploding / Vanishing gradients
+gradient clipping해야할 수도 있다.
+Deeplearning4j에 좋은 가이드라인이 나온다 : activation의 표준편차는 주로 0.5에서 2사이다. 이를 벗어나면 vanishing/exploding activation을 의심해봐야 한다.
+Increase/Decrease Learning Rate : 현재 lr에서 0.1이나 10을 곱하면서 바꾸어볼것.
+RNN을 학습할 때, NaN은 큰 문제
+처음 100 iteration안에 NaN을 얻는다면, lr을 줄여본다.
+0으로 나눌 때 뿐 아니라, log에 0이나 음수가 들어가서 나올 수 있다.
+NaN을 다루는 Russell Stewart의 훌륭한 글이 있다.
+layer by layer로 조사해보면서 NaN을 찾아야 할 수도 있다.
