@@ -209,7 +209,7 @@ def load_cifar_10_data(data_dir, negatives=False): #흩어져있는 batches들 �
     print(len(cifar_train_data))
     for idx in range(len(cifar_train_data)):
         train_label = cifar_train_labels[idx]
-        train_image = cifar_train_data[idx].transpose(1,2,0) #.reshape(32,32,3) # 1 1 3 error 해결용으로 3줄 사용 
+        train_image = cifar_train_data[idx].transpose(1,2,0) 
         train_image = train_image.astype(np.uint8)
         train_image = Image.fromarray(train_image)
         # 클래스 별 폴더에 파일 저장
