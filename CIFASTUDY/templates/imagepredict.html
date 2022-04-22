@@ -28,13 +28,10 @@
         {% endif %}
         {% if imgdata is defined %}
         <ul>
-            
-            {% for x in range(1) %}
-                
                 <div class=nobr>
-                <pre>{{data[x]}} <img src="{{imgdata[x]}}" /></pre>
+                <pre>{{data[0]}} <img src="{{imgdata[0]}}" /></pre>
                 </div>
-            {% endfor %}
+           
         </ul>
         {% endif %}
         <button onclick="history.back()">Go Back</button>

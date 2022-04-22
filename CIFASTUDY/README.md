@@ -162,6 +162,13 @@ pIL의 이미지는 ['width','height','channel] 형태다. pytorch에서 학습�
 ```
 볼 수 있듯이, 데이터를 이미지로 변환시에 transpose해줘야한다.
 
+PIL.Image 형태 -> tensor 형태로 변환하는 방법
+PIL (numpy.ndarray) 형태는 H*W*C이고 scale도 [0~255]이다. 그런데 Tensor형태로 모델에 학습한다면 C*H*W 형태여야하기 때문에 유의해야한다. 
+어떻게 하면 바꿀 수 있을까 고민하다가 구글링을 통해 너무나도 자주 썼던 기능에서 한번에 된다는 것을 알게 되었다. (추후 이미지 관련 작업을 할 경우 참고)
+```python
+    torchvision.transforms.ToTensor() #Image to Tensor 
+    torchvision.transforms.ToPILImage() # Tensor to Image  
+```
 ### tensor형태에서 차원을 늘리거나 줄이는 방법 
 -> unsqueeze와 squeeze를 사용하자.
 해당 문제는 dataloader에 1개의 데이터를 넣어줄때 활용했다. 실제 프론트에서 가져오는 이미지는 1개일때 dataloader에서 batch를 1로 잡아도 엉뚱한 값으로 (가령 [1,32,32] 와 같이 3차원을 자른다.) 가져온다. 
@@ -193,3 +200,5 @@ pIL의 이미지는 ['width','height','channel] 형태다. pytorch에서 학습�
 ```
 주말 공부 출처:
 https://ddangjiwon.tistory.com/category/Backend/Internet
+https://velog.io/@inyong_pang/Data-Structure-Hash-Table%ED%95%B4%EC%89%AC-%ED%85%8C%EC%9D%B4%EB%B8%94 
+linear probing and sha-256 적용 
