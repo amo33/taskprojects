@@ -191,3 +191,5 @@ pIL의 이미지는 ['width','height','channel] 형태다. pytorch에서 학습�
             data = answer
     
 ```
+주말 공부 출처:
+https://ddangjiwon.tistory.com/category/Backend/Internet
