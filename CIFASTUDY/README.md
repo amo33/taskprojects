@@ -198,7 +198,24 @@ PIL (numpy.ndarray) 형태는 H*W*C이고 scale도 [0~255]이다. 그런데 Tens
             data = answer
     
 ```
+
+### aws 클라우드 사용 -정리
+1. scp 로 폴더는 -r , 나머지는 아무 옵션 없이 보내면 된다. 이때, 이 과정은 로컬에서 진행해야한다. 뭣도 모르고 바로 클라우드 접속하고 거기서 보낸다는건 말도 안된다. 까먹지 말자.
+2. 상대방이 만든 클라우드에 아이디와 비밀번호, 공개 DNS를 통해 ssh -i 아이디@DNS주소 로 접속하고 비밀번호를 입력한다.
+### Model of Image method 
+transforms.RandomHorizontalFlip() works on PIL.Images, not torch.Tensor. 
+Inside my code, I was applying transforms.ToTensor() prior to transforms.RandomHorizontalFlip(), which results in tensor.
+But, as per the official pytorch documentation,
+transforms.RandomHorizontalFlip() horizontally flip the given PIL Image randomly with a given probability.
+
+So, just change the order of my code into 
+```python 
+    train_transforms = transforms.Compose([ 
+                                       transforms.RandomHorizontalFlip(),
+                                       transforms.ToTensor(), 
+                                       transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])]) 
+```
+
+
 주말 공부 출처:
 https://ddangjiwon.tistory.com/category/Backend/Internet
-https://velog.io/@inyong_pang/Data-Structure-Hash-Table%ED%95%B4%EC%89%AC-%ED%85%8C%EC%9D%B4%EB%B8%94 
-linear probing and sha-256 적용 
