@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <title>Object detection</title>
+</head>
+<body class="text-section">
+    {% if result is not defined %}
+    <h1>Upload any car image</h1>
+    <form action="/car" method="post" enctype="multipart/form-data">
+      
+      <input type="file" name="file" accept="image/png, image/jpg" id="file">
+      <br>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+    </form>
+    {% endif %}
+    {% if result is defined %}
+      <h2>{{result}}</h2>
+      <img src="{{image}}" />
+    {% endif %}
+</body>
+</html>

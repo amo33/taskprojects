@@ -1,0 +1,6 @@
+weights/
+*.pt
+*.yaml
+__pycache__/
+yolov5/
+events*
