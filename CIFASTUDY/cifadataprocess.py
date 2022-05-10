@@ -37,10 +37,10 @@ def load_cifar_10_data(data_dir, negatives=False): #흩어져있는 batches들 �
             os.makedirs("data/train/"+target)
     if not os.path.exists("data/test"):
         for target in classes:
-            os.makedirs("data/valid/"+target)
+            os.makedirs("data/test/"+target)
     if not os.path.exists("data/valid"):
         for target in classes:
-            os.makedirs("data/test/"+target)
+            os.makedirs("data/valid/"+target)
     cifar_label_names = meta_data_dict[b'label_names']
     cifar_label_names = np.array(cifar_label_names)
     
@@ -73,7 +73,7 @@ def load_cifar_10_data(data_dir, negatives=False): #흩어져있는 batches들 �
     print(territory)
     
     cifar_test_data = cifar_train_data[0:territory]
-    cifar_test_filenames = cifar_train_filenames[0:territory]
+    #cifar_test_filenames = cifar_train_filenames[0:territory]
     cifar_test_labels = cifar_train_labels[0:territory]
     cifar_train_data = cifar_train_data[territory:]
     cifar_train_filenames = cifar_train_filenames[territory:]
@@ -84,7 +84,7 @@ def load_cifar_10_data(data_dir, negatives=False): #흩어져있는 batches들 �
     cifar_train_data = cifar_train_data[val_range:]
     cifar_valid_labels = cifar_train_labels[0:val_range]
     cifar_train_labels = cifar_train_labels[val_range:]
-    cifar_valid_filenames = cifar_train_filenames[0:val_range]
+    #cifar_valid_filenames = cifar_train_filenames[0:val_range]
     cifar_train_filenames = cifar_train_filenames[val_range: ]
     print(len(cifar_train_data))
     for idx in range(len(cifar_train_data)):
