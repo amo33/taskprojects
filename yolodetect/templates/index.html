@@ -16,23 +16,39 @@
         }
       }
     </style>
-    <link rel="stylesheet" href="/static/style.css">
+    <!--<link rel="stylesheet" href="/static/style.css">-->
 
     <title>Object detection</title>
 </head>
 <body class="text-section">
+  <script>
+    function fileUploaded(){
+        if(document.getElementById("file").value != "") {
+            document.getElementById("submit").disabled = false;
+        }
+    }
+  </script>
     {% if result is not defined %}
     <h1>Upload any car image</h1>
     <form action="/car" method="post" enctype="multipart/form-data">
       
-      <input type="file" name="file" accept="image/png, image/jpg" id="file">
+      <input type="file" name="file" accept="image/png, image/jpg" id="file" onchange="fileUploaded()">
       <br>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+      <input id="submit" type="submit" disabled />
     </form>
     {% endif %}
     {% if result is defined %}
-      <h2>{{result}}</h2>
-      <img src="{{image}}" />
+      <div>
+        <h2>{{result}}</h2>
+        <img src="{{image}}" />
+        <br>
+        <button onclick="location.href='/'">Go back</button>
+      </div>
     {% endif %}
+    <script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+ 
+
 </body>
 </html>

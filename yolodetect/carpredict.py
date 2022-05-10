@@ -35,7 +35,7 @@ def predict():
     img_bytes = file.read()
     results = prediction(img_bytes)
     label = results.pandas().xyxy[0]['class']
-    print(label[0])
+    print(label)
     print(type(label))
     results.save() #현재 디렉토리에 이미지 저장 
     

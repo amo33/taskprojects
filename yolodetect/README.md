@@ -9,6 +9,9 @@ I used labelImg to do the labeling. (not Roboflow)
 #### 1. scp 
         scp -r files client@address:/<directory> means send local files to server. 
         scp client@address:/<directory>/<filename> means download file from server. 
+#### 2. git & sourcetree setting for contribution map 
+        https://wellbell.tistory.com/43
+        https://velog.io/@starkdy/GitHub-%EC%9E%94%EB%94%94-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0-%EB%B0%A9%EB%B2%95
 ## 공부용
 https://github.com/ultralytics/yolov5/wiki/Tips-for-Best-Training-Results
 https://github.com/robmarkcole/yolov5-flask/blob/master/templates/index.html
