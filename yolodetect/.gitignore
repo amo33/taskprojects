@@ -4,3 +4,4 @@ weights/
 __pycache__/
 yolov5/
 events*
+labelImg/
