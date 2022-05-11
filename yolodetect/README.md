@@ -15,3 +15,8 @@ I used labelImg to do the labeling. (not Roboflow)
 ## 공부용
 https://github.com/ultralytics/yolov5/wiki/Tips-for-Best-Training-Results
 https://github.com/robmarkcole/yolov5-flask/blob/master/templates/index.html
+
+### docker 접속 
+
+triplet_tank@ip-172-31-20-14 ~]$ docker cp /home/triplet_tank/deep_fashion/. 8b0f58124f48:/deepfashion/
+이 명령어는 바로 접속 후 컨테이너 실행 후  치면된다. 8b0~은 컨테이너 번호다.
