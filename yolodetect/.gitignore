@@ -6,3 +6,4 @@ yolov5/
 events*
 labelImg/
 runs/
+*.json
