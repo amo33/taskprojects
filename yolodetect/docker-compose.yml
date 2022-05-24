@@ -1,0 +1,28 @@
+version: "3"
+
+service:
+  style:
+      image: deepfashion
+      restart: always
+      volumes: 
+        - ./data/triplet_tank/etc 
+      ports:
+        - "80:8080"
+      container_name: stylecontainer
+  feature:
+      image: deepfashion
+      restart: always 
+      volumes:
+        - ./data/triplet_tank/etc
+      ports:
+        - "3306:3306"
+      container_name: featurecontainer 
+  detail: 
+      image: deepfashion
+      restart: always 
+      volumes:
+        - ./data/triplet_tank/etc
+      ports:
+        - "8888:8888"
+      container_name: detailcontainer 
+      
